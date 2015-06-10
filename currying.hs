@@ -40,6 +40,28 @@ longChainNums = length (filter isLong (map collatz [1..100]))
 longChainNums' :: Int
 longChainNums' = length (filter (\xs -> length xs > 15) (map collatz [1..100]))
 					
+foldl' :: (a -> b -> a) -> a -> [b] -> a
+foldl' fn acc [] = acc 
+foldl' fn acc (x:xs) = foldl' fn (fn acc x) xs
 
-reduce' fn acc [x] = fn acc x
-reduce' fn acc (x:xs) = reduce' fn (fn acc x) xs
+elem' :: (Eq a) => a -> [a] -> Bool  
+elem' y ys = foldl (\acc x -> if x == y then True else acc) False ys  
+
+map'' :: (a->b)->[a]->[b]
+map'' fn xs= foldr (\x acc -> fn x : acc ) [] xs
+
+maximum' :: (Ord a)=> [a]->a
+maximum' = foldl1 max
+
+reverse' = foldl (flip (:)) [] 
+
+product' ::(Num a) => [a] -> a
+product' = foldl1 (*)
+
+filter'' :: (a->Bool)->[a]->[a]
+filter'' predicate = foldr (\x acc-> if predicate x == True then x:acc else acc) [] 
+
+last' = foldl1 (\_ x ->x)
+
+scanl' _ acc [] = [acc]
+scanl' f acc (x:xs) = acc:(scanl' f (f acc x) xs)  
